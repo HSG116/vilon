@@ -130,7 +130,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                      animate={{ scale: 1, opacity: 1 }}
                      whileHover={{ scale: 1.05 }}
                      onClick={attemptPlay}
-                     className="px-12 py-5 bg-gradient-to-r from-red-600 to-red-800 text-white font-black text-xl rounded-full shadow-[0_20px_50px_rgba(255,0,0,0.5)]"
+                     className="px-8 py-4 md:px-12 md:py-5 bg-gradient-to-r from-red-600 to-red-800 text-white font-black text-lg md:text-xl rounded-full shadow-[0_20px_50px_rgba(255,0,0,0.5)]"
                    >
                      {t.play}
                    </motion.button>
@@ -138,7 +138,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               )}
 
               {error && (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] text-white flex-col gap-10 p-12 text-center z-20">
+                <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] text-white flex-col gap-6 md:gap-10 p-6 md:p-12 text-center z-20">
                    <div className="relative group">
                       <div className="absolute inset-0 bg-red-600 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
                       <ShieldAlert className="w-24 h-24 text-red-500 relative z-10" />
@@ -160,7 +160,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
             key="final"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] p-6 text-center"
+            className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] p-3 md:p-6 text-center"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.15)_0%,transparent_60%)]" />
 
@@ -176,7 +176,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 opacity: { duration: 1 },
                 rotateX: { type: "spring", damping: 15, stiffness: 45 }
               }}
-              className="relative w-full max-w-4xl aspect-[4/5] md:aspect-video rounded-[30px] md:rounded-[40px] overflow-hidden border-2 border-red-500/40 shadow-[0_0_100px_rgba(255,0,0,0.4),inset_0_0_40px_rgba(255,0,0,0.2)] perspective-1000 z-10"
+              className="relative w-full max-w-[90vw] md:max-w-4xl aspect-square md:aspect-video max-h-[50vh] md:max-h-none rounded-[20px] md:rounded-[40px] overflow-hidden border-2 border-red-500/40 shadow-[0_0_100px_rgba(255,0,0,0.4),inset_0_0_40px_rgba(255,0,0,0.2)] perspective-1000 z-10"
             >
               <img
                 src={FINAL_IMAGE}
@@ -191,11 +191,11 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1 }}
-              className="mt-12 md:mt-16 relative z-20"
+              className="mt-8 md:mt-16 relative z-20"
             >
               <button
                 onClick={onClose}
-                className="px-12 py-5 md:px-20 md:py-6 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-red-800 text-white font-black text-xl md:text-2xl hover:scale-110 active:scale-95 transition-all duration-300 shadow-[0_15px_50px_rgba(255,0,0,0.5)] relative overflow-hidden group"
+                className="px-8 py-4 md:px-20 md:py-6 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-red-800 text-white font-black text-lg md:text-2xl hover:scale-110 active:scale-95 transition-all duration-300 shadow-[0_15px_50px_rgba(255,0,0,0.5)] relative overflow-hidden group"
               >
                 <span className="relative z-10 flex items-center gap-3 tracking-widest uppercase drop-shadow-md">
                   {t.close}
@@ -206,7 +206,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
             </motion.div>
 
             <div className="absolute inset-0 pointer-events-none">
-              {Array.from({ length: 40 }).map((_, i) => (
+              {Array.from({ length: typeof window !== 'undefined' && window.innerWidth < 768 ? 15 : 40 }).map((_, i) => (
                 <motion.div
                   key={i}
                   initial={{ x: Math.random() * window.innerWidth, y: window.innerHeight + 100, opacity: 0 }}
