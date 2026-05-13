@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import confetti from 'canvas-confetti';
 import { ShieldAlert } from 'lucide-react';
@@ -16,22 +16,19 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   const [videoEnded, setVideoEnded] = useState(false);
   const [error, setError] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [needsInteraction, setNeedsInteraction] = useState(false);
 
   const t = {
     en: {
       thankYou: "100,000 LEGENDS!",
       celebration: "KICK MILESTONE REACHED",
       close: "Enter Hub",
-      loading: "INITIALIZING STREAM...",
-      play: "PLAY CELEBRATION"
+      loading: "INITIALIZING STREAM..."
     },
     ar: {
       thankYou: "100,000 أسطورة!",
       celebration: "إنجاز تاريخي على كيك",
       close: "دخول المركز",
-      loading: "جاري التحميل...",
-      play: "بدء الاحتفال"
+      loading: "جاري التحميل..."
     }
   }[lang];
 
@@ -42,11 +39,9 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
 
   const attemptPlay = () => {
     if (videoRef.current) {
-        setNeedsInteraction(false);
-        videoRef.current.play().catch(e => {
-            console.warn("Autoplay prevented:", e);
-            // If browser blocks autoplay, we show a button to start it manually
-            setNeedsInteraction(true);
+        videoRef.current.play().catch(() => {
+            setVideoEnded(true);
+            triggerConfetti();
         });
     }
   };
@@ -103,7 +98,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               <video
                 ref={videoRef}
                 src={VIDEO_URL}
-                className={`w-full h-full object-cover transition-opacity duration-1000 ${isReady && !needsInteraction ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-full h-full object-cover transition-opacity duration-1000 ${isReady ? 'opacity-100' : 'opacity-0'}`}
                 onEnded={handleVideoEnd}
                 onLoadedData={handleVideoReady}
                 onError={handleVideoError}
@@ -112,7 +107,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 controls={false}
               />
               
-              {!isReady && !error && !needsInteraction && (
+              {!isReady && !error && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-black z-20">
                    <motion.div 
                      animate={{ rotate: 360 }}
@@ -120,20 +115,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                      className="w-24 h-24 border-2 border-red-500/20 border-t-red-500 rounded-full"
                    />
                    <span className="text-red-500 font-mono text-xs animate-pulse tracking-widest uppercase">{t.loading}</span>
-                </div>
-              )}
-
-              {needsInteraction && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md z-30">
-                   <motion.button 
-                     initial={{ scale: 0.8, opacity: 0 }}
-                     animate={{ scale: 1, opacity: 1 }}
-                     whileHover={{ scale: 1.05 }}
-                     onClick={attemptPlay}
-                     className="px-8 py-4 md:px-12 md:py-5 bg-gradient-to-r from-red-600 to-red-800 text-white font-black text-lg md:text-xl rounded-full shadow-[0_20px_50px_rgba(255,0,0,0.5)]"
-                   >
-                     {t.play}
-                   </motion.button>
                 </div>
               )}
 

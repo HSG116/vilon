@@ -651,15 +651,11 @@ export default function App() {
     const [showCelebration, setShowCelebration] = useState(false);
 
     useEffect(() => {
-        const expiry = localStorage.getItem('celebration_expiry');
-        if (expiry && Date.now() > parseInt(expiry)) return;
-
-        if (!expiry) {
-            localStorage.setItem('celebration_expiry', String(Date.now() + 12 * 60 * 60 * 1000));
-        }
+        if (localStorage.getItem('celebration_shown')) return;
 
         const timer = setTimeout(() => {
             setShowCelebration(true);
+            localStorage.setItem('celebration_shown', 'true');
         }, 5000);
         return () => clearTimeout(timer);
     }, []);
