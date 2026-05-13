@@ -16,9 +16,10 @@ export interface ChatMessage {
   id: string;
   username: string;
   message: string;
-  role: 'owner' | 'moderator' | 'vip' | 'user';
+  role: 'owner' | 'moderator' | 'vip' | 'subscriber' | 'user';
   color?: string; // Hex color for username
   timestamp?: number;
+  subscriberMonths?: number;
 }
 
 export interface KickDonation {

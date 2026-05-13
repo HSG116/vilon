@@ -63,10 +63,18 @@ class ChatService {
 
       this.channel.bind('App\\Events\\ChatMessageEvent', (data: any) => {
         let role = 'user';
+        let subMonths = 0;
         const badges = data.sender?.identity?.badges || [];
         if (badges.some((b: any) => b.type === 'broadcaster')) role = 'owner';
         else if (badges.some((b: any) => b.type === 'moderator')) role = 'moderator';
         else if (badges.some((b: any) => b.type === 'vip')) role = 'vip';
+        else {
+          const subBadge = badges.find((b: any) => b.type === 'subscriber');
+          if (subBadge) {
+            role = 'subscriber';
+            subMonths = subBadge.count || subBadge.months || 0;
+          }
+        }
 
         this.messageListeners.forEach(listener => listener({
           id: data.id || Math.random().toString(),
@@ -75,7 +83,8 @@ class ChatService {
             username: data.sender?.username || 'Unknown', 
             color: data.sender?.identity?.color || '#FFFFFF' 
           },
-          role: role as any
+          role: role as any,
+          subscriberMonths: subMonths
         }));
       });
 
