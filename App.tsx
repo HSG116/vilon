@@ -651,15 +651,12 @@ export default function App() {
     const [showCelebration, setShowCelebration] = useState(false);
 
     useEffect(() => {
-        // Expiration Timer: 24 hours from 2026-05-13T01:53:13Z
-        const CELEBRATION_END_TIME = new Date('2026-05-14T01:53:13Z').getTime();
-        
-        if (Date.now() > CELEBRATION_END_TIME) {
-            return; // The surprise has expired, site loads normally immediately.
-        }
+        const hasSeenCelebration = localStorage.getItem('celebration_shown');
+        if (hasSeenCelebration) return;
 
         const timer = setTimeout(() => {
             setShowCelebration(true);
+            localStorage.setItem('celebration_shown', 'true');
         }, 5000);
         return () => clearTimeout(timer);
     }, []);

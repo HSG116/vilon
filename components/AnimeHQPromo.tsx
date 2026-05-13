@@ -10,18 +10,12 @@ export const AnimeHQPromo: React.FC<AnimeHQPromoProps> = ({ lang }) => {
     const isRTL = lang === 'ar';
 
     useEffect(() => {
-        // Check if user has already dismissed the promo
-        const isDismissed = localStorage.getItem('anime_promo_dismissed');
-        if (isDismissed) return;
-
-        // Show after a short delay
         const timer = setTimeout(() => setIsVisible(true), 2500);
         return () => clearTimeout(timer);
     }, []);
 
     const handleClose = () => {
         setIsVisible(false);
-        localStorage.setItem('anime_promo_dismissed', 'true');
     };
 
     const text = isRTL 
