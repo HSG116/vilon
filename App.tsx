@@ -706,6 +706,20 @@ export default function App() {
 
     const [isDemo, setIsDemo] = useState(false);
 
+    const fetchYouTubeStats = React.useCallback(async () => {
+        try {
+            const res = await fetch('https://api.socialcounts.org/youtube-live-subscriber-count/UCarKxFdTOwury7d9OCj5kZQ');
+            const data = await res.json();
+            const count = data?.counters?.api?.subscriberCount || data?.counters?.estimation?.subscriberCount;
+            if (count) {
+                const formatted = count >= 1000 ? `${(count / 1000).toFixed(1)}K` : count.toString();
+                setSocialStats(prev => ({ ...prev, 'YouTube': formatted }));
+            }
+        } catch (e) {
+            console.warn("Failed to fetch YouTube stats");
+        }
+    }, []);
+
     const fetchKickStatus = React.useCallback(async () => {
         // الكود الحقيقي والسريع باستخدام kickFetch
         try {
@@ -759,11 +773,14 @@ export default function App() {
 
     useEffect(() => {
         fetchKickStatus();
-        const kickInterval = setInterval(fetchKickStatus, 60000); // تحديث كل دقيقة وليس 30 ثانية لتخفيف الضغط
+        fetchYouTubeStats();
+        const kickInterval = setInterval(fetchKickStatus, 60000);
+        const ytInterval = setInterval(fetchYouTubeStats, 60000);
         return () => {
             clearInterval(kickInterval);
+            clearInterval(ytInterval);
         };
-    }, [fetchKickStatus]);
+    }, [fetchKickStatus, fetchYouTubeStats]);
 
     const handleShare = async () => {
         const shareUrl = "https://kick.com/vilon";

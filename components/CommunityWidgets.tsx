@@ -182,7 +182,7 @@ export const DiscordWidget: React.FC<CommunityWidgetsProps> = ({ lang }) => {
 
 export const YoutubeWidget: React.FC<CommunityWidgetsProps> = ({ lang }) => {
    const [video, setVideo] = useState<YoutubeData | null>(null);
-   const [subs, setSubs] = useState<string>('47,100');
+   const [subs, setSubs] = useState<string>('--');
    const [loading, setLoading] = useState(true);
    const channelUrl = 'https://www.youtube.com/@vilon45';
 
