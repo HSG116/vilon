@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import confetti from 'canvas-confetti';
-import { ShieldAlert } from 'lucide-react';
 
 interface CelebrationOverlayProps {
   onClose: () => void;
@@ -16,19 +15,18 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   const [videoEnded, setVideoEnded] = useState(false);
   const [error, setError] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [needsInteraction, setNeedsInteraction] = useState(false);
 
   const t = {
     en: {
-      thankYou: "100,000 LEGENDS!",
-      celebration: "KICK MILESTONE REACHED",
       close: "Enter Hub",
-      loading: "INITIALIZING STREAM..."
+      loading: "INITIALIZING STREAM...",
+      play: "▶ WATCH"
     },
     ar: {
-      thankYou: "100,000 أسطورة!",
-      celebration: "إنجاز تاريخي على كيك",
       close: "دخول المركز",
-      loading: "جاري التحميل..."
+      loading: "جاري التحميل...",
+      play: "▶ شاهد"
     }
   }[lang];
 
@@ -39,9 +37,9 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
 
   const attemptPlay = () => {
     if (videoRef.current) {
+        setNeedsInteraction(false);
         videoRef.current.play().catch(() => {
-            setVideoEnded(true);
-            triggerConfetti();
+            setNeedsInteraction(true);
         });
     }
   };
@@ -52,7 +50,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   };
 
   const handleVideoError = () => {
-    console.error("Video failed to load");
     setError(true);
   };
 
@@ -66,7 +63,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
       const timeLeft = animationEnd - Date.now();
       if (timeLeft <= 0) return clearInterval(interval);
       const particleCount = 50 * (timeLeft / duration);
-      // Changed to RED confetti theme
       confetti({ ...defaults, particleCount, colors: ['#FF0000', '#FF2D2D', '#ffffff'], origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
       confetti({ ...defaults, particleCount, colors: ['#FF0000', '#FF2D2D', '#ffffff'], origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
     }, 300);
@@ -98,7 +94,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               <video
                 ref={videoRef}
                 src={VIDEO_URL}
-                className={`w-full h-full object-cover transition-opacity duration-1000 ${isReady ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-full h-full object-cover transition-opacity duration-1000 ${isReady && !needsInteraction ? 'opacity-100' : 'opacity-0'}`}
                 onEnded={handleVideoEnd}
                 onLoadedData={handleVideoReady}
                 onError={handleVideoError}
@@ -107,7 +103,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 controls={false}
               />
               
-              {!isReady && !error && (
+              {!isReady && !error && !needsInteraction && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-black z-20">
                    <motion.div 
                      animate={{ rotate: 360 }}
@@ -118,15 +114,46 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 </div>
               )}
 
+              {needsInteraction && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-xl z-30">
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", damping: 15 }}
+                    className="flex flex-col items-center gap-8"
+                  >
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-red-500 blur-3xl opacity-30 animate-pulse"></div>
+                      <motion.button
+                        onClick={attemptPlay}
+                        whileHover={{ scale: 1.08 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="relative px-10 py-4 md:px-16 md:py-5 rounded-2xl bg-gradient-to-b from-red-500 to-red-700 text-white font-black text-lg md:text-xl tracking-wider shadow-[0_0_40px_rgba(255,0,0,0.3)] border border-red-400/30 overflow-hidden group"
+                      >
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.15),transparent_60%)]"></div>
+                        <span className="relative z-10 flex items-center gap-3">
+                          <span className="text-2xl">▶</span>
+                          {t.play}
+                        </span>
+                      </motion.button>
+                    </div>
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="text-white/30 text-xs tracking-widest uppercase"
+                    >
+                      {lang === 'en' ? 'Click to start celebration' : 'اضغط لبدء الاحتفال'}
+                    </motion.p>
+                  </motion.div>
+                </div>
+              )}
+
               {error && (
                 <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] text-white flex-col gap-6 md:gap-10 p-6 md:p-12 text-center z-20">
-                   <div className="relative group">
-                      <div className="absolute inset-0 bg-red-600 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                      <ShieldAlert className="w-24 h-24 text-red-500 relative z-10" />
-                   </div>
                    <button 
                      onClick={() => setVideoEnded(true)}
-                     className="relative px-14 py-5 bg-red-600 text-white font-black text-xl rounded-2xl shadow-[0_20px_60px_rgba(255,0,0,0.4)] hover:scale-105 transition-all"
+                     className="relative px-10 py-4 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl border border-white/10 hover:bg-white/20 transition-all hover:scale-105"
                    >
                      {lang === 'en' ? 'SKIP' : 'تخطي'}
                    </button>
