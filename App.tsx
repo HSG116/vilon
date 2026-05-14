@@ -69,7 +69,7 @@ const TRANSLATIONS = {
         defaultStreamTitle: 'CHECK OUT THE VODS | FOLLOW NOW',
         defaultCategory: 'Offline',
         footer: '© 2026 Vilon. All Rights Reserved.',
-        poweredBy: 'POWERED BY VILON',
+        poweredBy: 'POWERED BY HSG',
         subOnly: 'SUB ONLY',
         dropsEnabled: 'DROPS ENABLED',
         noTags: 'No tags',
