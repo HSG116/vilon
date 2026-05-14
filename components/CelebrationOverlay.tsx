@@ -258,7 +258,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 <div className="absolute inset-0 rounded-[24px] md:rounded-[40px] bg-gradient-to-b from-transparent via-red-500/10 to-transparent opacity-50" />
               </div>
 
-              <img src={FINAL_IMAGE} className="w-full h-full object-cover" alt="Celebration" />
+              <img src={FINAL_IMAGE} className="w-full h-full object-cover" alt="Celebration" decoding="async" loading="lazy" />
 
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10" />
             </motion.div>

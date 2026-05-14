@@ -801,8 +801,8 @@ export default function App() {
             <AnimeHQPromo lang={lang} />
             <div className="fixed inset-0 z-0 bg-[#050505] overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none w-full h-full opacity-90 transition-opacity duration-1000">
-                    <img src={PC_BACKGROUND} className="hidden md:block w-full h-full object-cover" alt="Background" />
-                    <img src={MOBILE_BACKGROUND} className="block md:hidden w-full h-full object-cover" alt="Background" />
+                    <img src={PC_BACKGROUND} className="hidden md:block w-full h-full object-cover" alt="Background" decoding="async" />
+                    <img src={MOBILE_BACKGROUND} className="block md:hidden w-full h-full object-cover" alt="Background" decoding="async" />
                 </div>
                 
                 {/* Less aggressive gradients to let the video shine */}
