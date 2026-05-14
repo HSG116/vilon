@@ -128,38 +128,83 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               )}
 
               {needsInteraction && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-xl z-30">
+                <motion.div
+                  onClick={attemptPlay}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 z-30 flex items-center justify-center cursor-pointer"
+                >
+                  {/* Animated gradient background */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-red-950/40 to-black/90" />
+                  
+                  {/* Pulsing rings */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {[0, 1, 2].map((i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ scale: 0.8, opacity: 0.5 }}
+                        animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 0.1, 0.3] }}
+                        transition={{ duration: 3, repeat: Infinity, delay: i * 1 }}
+                        className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full border border-red-500/20"
+                      />
+                    ))}
+                  </div>
+
+                  {/* Center content */}
                   <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", damping: 15 }}
-                    className="flex flex-col items-center gap-8"
+                    initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    transition={{ type: "spring", damping: 15, delay: 0.3 }}
+                    className="relative flex flex-col items-center gap-6"
                   >
+                    {/* Icon with glow */}
                     <div className="relative">
-                      <div className="absolute inset-0 bg-red-500 blur-3xl opacity-30 animate-pulse"></div>
-                      <motion.button
-                        onClick={attemptPlay}
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="relative px-10 py-4 md:px-16 md:py-5 rounded-2xl bg-gradient-to-b from-red-500 to-red-700 text-white font-black text-lg md:text-xl tracking-wider shadow-[0_0_40px_rgba(255,0,0,0.3)] border border-red-400/30 overflow-hidden group"
+                      <div className="absolute inset-0 bg-red-500 blur-[80px] opacity-40 animate-pulse" />
+                      <motion.div
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="relative w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-red-500 to-red-900 flex items-center justify-center shadow-[0_0_60px_rgba(255,0,0,0.4)]"
                       >
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.15),transparent_60%)]"></div>
-                        <span className="relative z-10 flex items-center gap-3">
-                          <span className="text-2xl">▶</span>
-                          {t.play}
-                        </span>
-                      </motion.button>
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 md:w-14 md:h-14 text-white ml-1">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </motion.div>
                     </div>
-                    <motion.p
+
+                    {/* Text */}
+                    <div className="text-center">
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                        className="text-white/90 font-black text-xl md:text-3xl tracking-wider"
+                      >
+                        {lang === 'en' ? '🎉 CELEBRATION' : '🎉 احتفالية'}
+                      </motion.p>
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8 }}
+                        className="text-white/40 text-sm md:text-base mt-2 tracking-wide"
+                      >
+                        {lang === 'en' ? 'Tap anywhere to begin' : 'اضغط في أي مكان للبدء'}
+                      </motion.p>
+                    </div>
+
+                    {/* Bottom hint */}
+                    <motion.div
                       initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.5 }}
-                      className="text-white/30 text-xs tracking-widest uppercase"
+                      animate={{ opacity: [0, 0.5, 0] }}
+                      transition={{ delay: 1.5, duration: 2, repeat: Infinity }}
+                      className="flex items-center gap-2 text-white/30 text-xs"
                     >
-                      {lang === 'en' ? 'Click to start celebration' : 'اضغط لبدء الاحتفال'}
-                    </motion.p>
+                      <svg className="w-4 h-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                      </svg>
+                      <span>{lang === 'en' ? 'Click anywhere' : 'اضغط في أي مكان'}</span>
+                    </motion.div>
                   </motion.div>
-                </div>
+                </motion.div>
               )}
 
               {error && (
