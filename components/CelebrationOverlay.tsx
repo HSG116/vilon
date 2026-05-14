@@ -7,8 +7,9 @@ interface CelebrationOverlayProps {
   lang: 'en' | 'ar';
 }
 
-const VIDEO_URL = "/Golden_confetti_flies__sword_pulses_202605130013-_2_.mp4";
-const FINAL_IMAGE = "/e4277d6d-eb27-4f41-9ec1-8a45944eb3a3%20(1).jpg";
+const BASE = import.meta.env.BASE_URL;
+const VIDEO_URL = `${BASE}Golden_confetti_flies__sword_pulses_202605130013-_2_.mp4`;
+const FINAL_IMAGE = `${BASE}e4277d6d-eb27-4f41-9ec1-8a45944eb3a3%20(1).jpg`;
 
 export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose, lang }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
