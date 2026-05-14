@@ -651,9 +651,6 @@ export default function App() {
     const [showCelebration, setShowCelebration] = useState(false);
 
     useEffect(() => {
-        if (localStorage.getItem('celebration_shown')) return;
-
-        localStorage.setItem('celebration_shown', 'true');
         const timer = setTimeout(() => {
             setShowCelebration(true);
         }, 1500);
