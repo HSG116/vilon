@@ -20,11 +20,9 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   const t = {
     en: {
       close: "Enter Hub",
-      play: "WATCH"
     },
     ar: {
       close: "دخول المركز",
-      play: "شاهد"
     }
   }[lang];
 
@@ -40,6 +38,13 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   };
 
   const handleVideoEnd = () => {
+    endedRef.current = true;
+    setVideoEnded(true);
+    setShowFinal(true);
+    triggerConfetti();
+  };
+
+  const handleVideoError = () => {
     endedRef.current = true;
     setVideoEnded(true);
     setShowFinal(true);
@@ -63,6 +68,18 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black overflow-hidden select-none font-sans">
+      {/* Video element - always rendered but visibility controlled via CSS */}
+      <video
+        ref={videoRef}
+        src={VIDEO_URL}
+        onEnded={handleVideoEnd}
+        onError={handleVideoError}
+        playsInline
+        preload="auto"
+        controls={false}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${showOverlay || showFinal ? 'opacity-0 pointer-events-none' : 'opacity-100 z-30'}`}
+      />
+
       <AnimatePresence mode="wait">
         {showOverlay && !showFinal && (
           <motion.div
@@ -74,11 +91,9 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
             transition={{ duration: 0.6 }}
             className="absolute inset-0 z-40 flex items-center justify-center cursor-pointer"
           >
-            {/* Dynamic gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-black via-[#1a0000] to-black" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,0,0.08),transparent_70%)]" />
 
-            {/* Floating orbs */}
             <div className="absolute inset-0 overflow-hidden">
               {[...Array(3)].map((_, i) => (
                 <motion.div
@@ -99,7 +114,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               ))}
             </div>
 
-            {/* Pulsing rings */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               {[...Array(3)].map((_, i) => (
                 <motion.div
@@ -112,7 +126,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               ))}
             </div>
 
-            {/* Sparkle particles */}
             <div className="absolute inset-0 pointer-events-none">
               {[...Array(20)].map((_, i) => (
                 <motion.div
@@ -131,14 +144,12 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               ))}
             </div>
 
-            {/* Center content */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               transition={{ type: "spring", damping: 18, stiffness: 100, delay: 0.2 }}
               className="relative flex flex-col items-center gap-5 md:gap-8 z-10"
             >
-              {/* Glowing play icon */}
               <div className="relative">
                 <motion.div
                   animate={{ scale: [1, 1.15, 1] }}
@@ -146,7 +157,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                   className="absolute inset-0 bg-red-500 blur-[100px] opacity-40"
                 />
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
                   className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-red-500 via-red-600 to-red-900 flex items-center justify-center shadow-[0_0_80px_rgba(255,0,0,0.5)] border border-red-400/30"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 md:w-16 md:h-16 text-white ml-1.5">
@@ -155,7 +165,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 </motion.div>
               </div>
 
-              {/* Title */}
               <div className="text-center">
                 <motion.p
                   initial={{ opacity: 0, y: 15 }}
@@ -181,7 +190,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 </motion.p>
               </div>
 
-              {/* Animated arrow */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 0.6, 0] }}
@@ -197,27 +205,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
           </motion.div>
         )}
 
-        {!showOverlay && !showFinal && (
-          <motion.div
-            key="video"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0 z-30 flex items-center justify-center bg-black"
-          >
-            <video
-              ref={videoRef}
-              src={VIDEO_URL}
-              className="w-full h-full object-cover"
-              onEnded={handleVideoEnd}
-              playsInline
-              autoPlay
-              controls={false}
-            />
-          </motion.div>
-        )}
-
         {showFinal && (
           <motion.div
             key="final"
@@ -226,7 +213,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
             exit={{ opacity: 0 }}
             className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] p-4 md:p-8 text-center overflow-hidden"
           >
-            {/* Background effects */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,0,0.1),transparent_60%)]" />
             <div className="absolute inset-0 overflow-hidden">
               {[...Array(5)].map((_, i) => (
@@ -249,7 +235,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               ))}
             </div>
 
-            {/* Floating particles */}
             <div className="absolute inset-0 pointer-events-none">
               {[...Array(30)].map((_, i) => (
                 <motion.div
@@ -263,29 +248,21 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               ))}
             </div>
 
-            {/* Image container */}
             <motion.div
               initial={{ y: 100, opacity: 0, scale: 0.9 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               transition={{ type: "spring", damping: 20, stiffness: 80 }}
               className="relative w-full max-w-[85vw] md:max-w-4xl aspect-[3/4] md:aspect-video rounded-[24px] md:rounded-[40px] overflow-hidden border border-red-500/30 shadow-[0_0_120px_rgba(255,0,0,0.3)] z-10"
             >
-              {/* Shimmer border */}
               <div className="absolute inset-0 z-20 rounded-[24px] md:rounded-[40px] pointer-events-none">
                 <div className="absolute inset-0 rounded-[24px] md:rounded-[40px] bg-gradient-to-b from-transparent via-red-500/10 to-transparent opacity-50" />
               </div>
 
-              <img
-                src={FINAL_IMAGE}
-                className="w-full h-full object-cover"
-                alt="Celebration"
-              />
+              <img src={FINAL_IMAGE} className="w-full h-full object-cover" alt="Celebration" />
 
-              {/* Bottom gradient overlay */}
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10" />
             </motion.div>
 
-            {/* Enter Hub Button */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -298,9 +275,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
                 whileTap={{ scale: 0.95 }}
                 className="relative px-12 py-4 md:px-24 md:py-5 rounded-full bg-gradient-to-b from-red-600 to-red-900 text-white font-black text-lg md:text-xl tracking-[0.15em] uppercase shadow-[0_0_60px_rgba(255,0,0,0.4)] border border-red-500/30 overflow-hidden group"
               >
-                {/* Hover shine */}
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
-                {/* Top light */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent_60%)]" />
                 <span className="relative z-10 flex items-center gap-3">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -311,7 +286,6 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
               </motion.button>
             </motion.div>
 
-            {/* Crown decoration at top */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.15 }}
