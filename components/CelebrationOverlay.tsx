@@ -52,7 +52,9 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
     if (videoRef.current) {
         setNeedsInteraction(false);
         videoRef.current.play().catch(() => {
-            setNeedsInteraction(true);
+            endedRef.current = true;
+            setVideoEnded(true);
+            triggerConfetti();
         });
     }
   };
