@@ -8,7 +8,7 @@ interface CelebrationOverlayProps {
 }
 
 const VIDEO_URL = "/Golden_confetti_flies__sword_pulses_202605130013-_2_.mp4";
-const FINAL_IMAGE = "/e4277d6d-eb27-4f41-9ec1-8a45944eb3a3 (1).jpg";
+const FINAL_IMAGE = "/e4277d6d-eb27-4f41-9ec1-8a45944eb3a3%20(1).jpg";
 
 export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose, lang }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -16,6 +16,18 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   const [error, setError] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [needsInteraction, setNeedsInteraction] = useState(false);
+  const endedRef = useRef(false);
+
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      if (!endedRef.current) {
+        endedRef.current = true;
+        setVideoEnded(true);
+        triggerConfetti();
+      }
+    }, 8000);
+    return () => clearTimeout(t);
+  }, []);
 
   const t = {
     en: {
@@ -31,6 +43,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   }[lang];
 
   const handleVideoEnd = () => {
+    endedRef.current = true;
     setVideoEnded(true);
     triggerConfetti();
   };

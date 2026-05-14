@@ -653,10 +653,10 @@ export default function App() {
     useEffect(() => {
         if (localStorage.getItem('celebration_shown')) return;
 
+        localStorage.setItem('celebration_shown', 'true');
         const timer = setTimeout(() => {
             setShowCelebration(true);
-            localStorage.setItem('celebration_shown', 'true');
-        }, 5000);
+        }, 1500);
         return () => clearTimeout(timer);
     }, []);
 
