@@ -77,7 +77,7 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
         playsInline
         preload="auto"
         controls={false}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${showOverlay || showFinal ? 'opacity-0 pointer-events-none' : 'opacity-100 z-30'}`}
+        className={`absolute inset-0 w-full h-full object-contain md:object-cover transition-opacity duration-700 ${showOverlay || showFinal ? 'opacity-0 pointer-events-none' : 'opacity-100 z-30'}`}
       />
 
       <AnimatePresence mode="wait">
