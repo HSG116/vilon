@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://kick.com/vilon/sitemap.xml
