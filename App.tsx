@@ -648,7 +648,14 @@ import { CelebrationOverlay } from './components/CelebrationOverlay';
 export default function App() {
     const [isHoveringProfile, setIsHoveringProfile] = useState(false);
     const [lang, setLang] = useState<Language>('en'); // Default to English as per request
-    const [showCelebration, setShowCelebration] = useState(true);
+    const [showCelebration, setShowCelebration] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowCelebration(true);
+        }, 6000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const [branding] = useState({
         profileImage: DEFAULT_PROFILE_IMAGE,
