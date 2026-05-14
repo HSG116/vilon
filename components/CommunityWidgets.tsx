@@ -101,7 +101,7 @@ export const DiscordWidget: React.FC<CommunityWidgetsProps> = ({ lang }) => {
                <div className="relative shrink-0">
                   <div className="absolute -inset-2 bg-[#5865F2] blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
                   <div className="relative w-16 h-16 rounded-2xl p-0.5 bg-[#1a1c2c] border border-white/15 shadow-2xl overflow-hidden transform group-hover:scale-105 transition-transform duration-500">
-<img src="https://github.com/himedz116-hue/PNG/blob/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png?raw=true" className="w-full h-full object-cover rounded-[14px]" alt="Vilon" loading="lazy" decoding="async" />
+<img src="https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png" className="w-full h-full object-cover rounded-[14px]" alt="Vilon" loading="lazy" decoding="async" />
                    </div>
                 </div>
 
@@ -210,7 +210,7 @@ export const YoutubeWidget: React.FC<CommunityWidgetsProps> = ({ lang }) => {
                title: lang === 'en' ? 'ULTRA ELITE GAMING CONTENT' : 'أقـوى مـحـتوى ألعاب - Vilon',
                link: channelUrl,
                date: 'LATEST',
-               thumbnail: 'https://github.com/himedz116-hue/PNG/blob/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png?raw=true'
+               thumbnail: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png'
             });
          }
          
@@ -265,7 +265,7 @@ export const YoutubeWidget: React.FC<CommunityWidgetsProps> = ({ lang }) => {
                <div className="relative shrink-0">
                   <div className="absolute -inset-2 bg-[#FF0000] blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
                   <div className="relative w-16 h-16 rounded-2xl p-0.5 bg-[#050000] border border-white/15 shadow-2xl overflow-hidden transform group-hover:scale-105 transition-transform duration-500">
-<img src="https://github.com/himedz116-hue/PNG/blob/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png?raw=true" className="w-full h-full object-cover rounded-[14px]" alt="Vilon" loading="lazy" decoding="async" />
+<img src="https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png" className="w-full h-full object-cover rounded-[14px]" alt="Vilon" loading="lazy" decoding="async" />
                    </div>
                 </div>
 

@@ -46,16 +46,16 @@ const VILON_FALLBACK_LEADERBOARD = {
 };
 
 const VILON_FALLBACK_CLIPS = [
-  { id: 'v1', title: 'فيلون ضد الكل! 🔥', view_count: 15400, thumbnail_url: 'https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true', created_at: new Date().toISOString() },
-  { id: 'v2', title: 'لحظة غدر غير متوقعة 😂', view_count: 12200, thumbnail_url: 'https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true', created_at: new Date().toISOString() },
-  { id: 'v3', title: 'فيلون ينهي الجولة باحتراف 👑', view_count: 18900, thumbnail_url: 'https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true', created_at: new Date().toISOString() },
-  { id: 'v4', title: 'أقوى ردة فعل 😱', view_count: 9800, thumbnail_url: 'https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true', created_at: new Date().toISOString() }
+  { id: 'v1', title: 'فيلون ضد الكل! 🔥', view_count: 15400, thumbnail_url: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg', created_at: new Date().toISOString() },
+  { id: 'v2', title: 'لحظة غدر غير متوقعة 😂', view_count: 12200, thumbnail_url: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg', created_at: new Date().toISOString() },
+  { id: 'v3', title: 'فيلون ينهي الجولة باحتراف 👑', view_count: 18900, thumbnail_url: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg', created_at: new Date().toISOString() },
+  { id: 'v4', title: 'أقوى ردة فعل 😱', view_count: 9800, thumbnail_url: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg', created_at: new Date().toISOString() }
 ];
 
 const VILON_FALLBACK_VIDEOS = [
-  { id: 'vod1', uuid: 'vod1', title: 'أقوى تحديات فيلون في كود | العودة للمنافسة 🔥', views: 45000, thumbnail: { url: 'https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true' }, created_at: new Date(Date.now() - 86400000).toISOString() },
-  { id: 'vod2', uuid: 'vod2', title: 'بث سوالف ولعب مع المتابعين 🎮', views: 32000, thumbnail: { url: 'https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true' }, created_at: new Date(Date.now() - 172800000).toISOString() },
-  { id: 'vod3', uuid: 'vod3', title: 'بطولة كود الرسمية - الجلد مستمر 👑', views: 58000, thumbnail: { url: 'https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true' }, created_at: new Date(Date.now() - 259200000).toISOString() }
+  { id: 'vod1', uuid: 'vod1', title: 'أقوى تحديات فيلون في كود | العودة للمنافسة 🔥', views: 45000, thumbnail: { url: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg' }, created_at: new Date(Date.now() - 86400000).toISOString() },
+  { id: 'vod2', uuid: 'vod2', title: 'بث سوالف ولعب مع المتابعين 🎮', views: 32000, thumbnail: { url: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg' }, created_at: new Date(Date.now() - 172800000).toISOString() },
+  { id: 'vod3', uuid: 'vod3', title: 'بطولة كود الرسمية - الجلد مستمر 👑', views: 58000, thumbnail: { url: 'https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg' }, created_at: new Date(Date.now() - 259200000).toISOString() }
 ];
 
 // --- NEW GRADIENT ICONS ---

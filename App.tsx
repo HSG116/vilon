@@ -8,12 +8,12 @@ import { DiscordWidget, YoutubeWidget } from './components/CommunityWidgets';
 import { AnimeHQPromo } from './components/AnimeHQPromo';
 
 // --- Constants ---
-const DEFAULT_PROFILE_IMAGE = "https://github.com/himedz116-hue/PNG/blob/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png?raw=true";
+const DEFAULT_PROFILE_IMAGE = "https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png";
 import { kickFetch } from './utils/kickApi';
 
 // Updated to Vilon backgrounds
-const PC_BACKGROUND = "https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true";
-const MOBILE_BACKGROUND = "https://github.com/himedz116-hue/PNG/blob/main/202605111507.jpeg?raw=true";
+const PC_BACKGROUND = "https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg";
+const MOBILE_BACKGROUND = "https://raw.githubusercontent.com/himedz116-hue/PNG/main/202605111507.jpeg";
 const CHANNEL_SLUG = 'vilon';
 
 // Helper to construct full social object
@@ -118,7 +118,7 @@ const VILON_DEFAULT_LAST_SESSION = {
     created_at: new Date(Date.now() - 86400000).toISOString(),
     duration: 14400,
     categories: [{ name: "Call of Duty" }, { name: "Just Chatting" }],
-    thumbnail: { url: "https://github.com/himedz116-hue/PNG/blob/main/2026051113557.jpeg?raw=true" }
+    thumbnail: { url: "https://raw.githubusercontent.com/himedz116-hue/PNG/main/2026051113557.jpeg" }
 };
 
 const VILON_DEFAULT_CLIPS = [
@@ -358,7 +358,7 @@ const SocialCard: React.FC<{ social: SocialLink, index: number, className?: stri
                 <div 
                     className="absolute inset-0 opacity-15 pointer-events-none group-hover:opacity-40 transition-all duration-1000 mix-blend-screen scale-100 group-hover:scale-110"
                     style={{ 
-                        backgroundImage: "url('https://raw.githubusercontent.com/himedz116-hue/PNG/refs/heads/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png')", 
+                        backgroundImage: "url('https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png')", 
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat'
@@ -526,7 +526,7 @@ const PaymentCard: React.FC<{
             <div 
                 className="absolute inset-0 opacity-10 pointer-events-none group-hover:opacity-30 transition-all duration-1000 mix-blend-screen scale-100 group-hover:scale-110"
                 style={{ 
-                    backgroundImage: "url('https://raw.githubusercontent.com/himedz116-hue/PNG/refs/heads/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png')", 
+                    backgroundImage: "url('https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png')", 
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat'
@@ -801,8 +801,8 @@ export default function App() {
             <AnimeHQPromo lang={lang} />
             <div className="fixed inset-0 z-0 bg-[#050505] overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none w-full h-full opacity-90 transition-opacity duration-1000">
-                    <img src={PC_BACKGROUND} className="hidden md:block w-full h-full object-cover" alt="Background" decoding="async" />
-                    <img src={MOBILE_BACKGROUND} className="block md:hidden w-full h-full object-cover" alt="Background" decoding="async" />
+                    <img src={PC_BACKGROUND} className="hidden md:block w-full h-full object-cover" alt="Background" fetchpriority="high" decoding="async" />
+                    <img src={MOBILE_BACKGROUND} className="block md:hidden w-full h-full object-cover" alt="Background" fetchpriority="high" decoding="async" />
                 </div>
                 
                 {/* Less aggressive gradients to let the video shine */}
