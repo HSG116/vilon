@@ -13,59 +13,37 @@ const FINAL_IMAGE = "/e4277d6d-eb27-4f41-9ec1-8a45944eb3a3%20(1).jpg";
 export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose, lang }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoEnded, setVideoEnded] = useState(false);
-  const [error, setError] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-  const [needsInteraction, setNeedsInteraction] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(true);
+  const [showFinal, setShowFinal] = useState(false);
   const endedRef = useRef(false);
-
-  React.useEffect(() => {
-    const t = setTimeout(() => {
-      if (!endedRef.current) {
-        endedRef.current = true;
-        setVideoEnded(true);
-        triggerConfetti();
-      }
-    }, 8000);
-    return () => clearTimeout(t);
-  }, []);
 
   const t = {
     en: {
       close: "Enter Hub",
-      loading: "INITIALIZING STREAM...",
-      play: "▶ WATCH"
+      play: "WATCH"
     },
     ar: {
       close: "دخول المركز",
-      loading: "جاري التحميل...",
-      play: "▶ شاهد"
+      play: "شاهد"
     }
   }[lang];
+
+  const startVideo = () => {
+    if (!videoRef.current) return;
+    setShowOverlay(false);
+    videoRef.current.play().catch(() => {
+      endedRef.current = true;
+      setVideoEnded(true);
+      setShowFinal(true);
+      triggerConfetti();
+    });
+  };
 
   const handleVideoEnd = () => {
     endedRef.current = true;
     setVideoEnded(true);
+    setShowFinal(true);
     triggerConfetti();
-  };
-
-  const attemptPlay = () => {
-    if (videoRef.current) {
-        setNeedsInteraction(false);
-        videoRef.current.play().catch(() => {
-            endedRef.current = true;
-            setVideoEnded(true);
-            triggerConfetti();
-        });
-    }
-  };
-
-  const handleVideoReady = () => {
-    setIsReady(true);
-    attemptPlay();
-  };
-
-  const handleVideoError = () => {
-    setError(true);
   };
 
   const triggerConfetti = () => {
@@ -84,206 +62,264 @@ export const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ onClose,
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-3xl overflow-hidden select-none font-sans perspective-1000">
-      
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black overflow-hidden select-none font-sans">
       <AnimatePresence mode="wait">
-        {!videoEnded && (
+        {showOverlay && !showFinal && (
           <motion.div
-            key="video"
-            initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="relative w-full h-full flex items-center justify-center p-0"
+            key="overlay"
+            onClick={startVideo}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 z-40 flex items-center justify-center cursor-pointer"
           >
-            {/* Cinematic Glow Behind Video */}
-            <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
-              <motion.div 
-                animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="w-3/4 h-3/4 bg-red-600/20 rounded-full blur-[120px]" 
-              />
+            {/* Dynamic gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black via-[#1a0000] to-black" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,0,0.08),transparent_70%)]" />
+
+            {/* Floating orbs */}
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(3)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    x: [Math.random() * 100 - 50, Math.random() * 100 - 50],
+                    y: [Math.random() * 100 - 50, Math.random() * 100 - 50],
+                    scale: [1, 1.2, 1],
+                  }}
+                  transition={{ duration: 8 + i * 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute w-32 h-32 md:w-48 md:h-48 rounded-full blur-[100px] opacity-30"
+                  style={{
+                    background: `radial-gradient(circle, rgba(255,${50 + i * 50},0,0.4), transparent)`,
+                    top: `${20 + i * 30}%`,
+                    left: `${10 + i * 35}%`,
+                  }}
+                />
+              ))}
             </div>
 
-            <div className="w-full h-full relative z-10 shadow-[inset_0_0_150px_rgba(0,0,0,1)] flex items-center justify-center bg-black">
-              <video
-                ref={videoRef}
-                src={VIDEO_URL}
-                className={`w-full h-full object-cover transition-opacity duration-1000 ${isReady && !needsInteraction ? 'opacity-100' : 'opacity-0'}`}
-                onEnded={handleVideoEnd}
-                onLoadedData={handleVideoReady}
-                onError={handleVideoError}
-                playsInline
-                autoPlay
-                controls={false}
-              />
-              
-              {!isReady && !error && !needsInteraction && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 bg-black z-20">
-                   <motion.div 
-                     animate={{ rotate: 360 }}
-                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                     className="w-24 h-24 border-2 border-red-500/20 border-t-red-500 rounded-full"
-                   />
-                   <span className="text-red-500 font-mono text-xs animate-pulse tracking-widest uppercase">{t.loading}</span>
-                </div>
-              )}
-
-              {needsInteraction && (
+            {/* Pulsing rings */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {[...Array(3)].map((_, i) => (
                 <motion.div
-                  onClick={attemptPlay}
+                  key={i}
+                  initial={{ scale: 0.8, opacity: 0.4 }}
+                  animate={{ scale: [0.8, 1.3, 0.8], opacity: [0.4, 0.1, 0.4] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: i * 1 }}
+                  className="absolute w-72 h-72 md:w-[500px] md:h-[500px] rounded-full border border-red-500/15"
+                />
+              ))}
+            </div>
+
+            {/* Sparkle particles */}
+            <div className="absolute inset-0 pointer-events-none">
+              {[...Array(20)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{
+                    opacity: [0, 0.8, 0],
+                    scale: [0, 1, 0],
+                    x: [0, Math.random() * 100 - 50],
+                    y: [0, Math.random() * -100 - 50],
+                  }}
+                  transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, delay: Math.random() * 3 }}
+                  className="absolute w-1 h-1 bg-red-400 rounded-full shadow-[0_0_10px_rgba(255,0,0,0.8)]"
+                  style={{ top: `${40 + Math.random() * 20}%`, left: `${40 + Math.random() * 20}%` }}
+                />
+              ))}
+            </div>
+
+            {/* Center content */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              transition={{ type: "spring", damping: 18, stiffness: 100, delay: 0.2 }}
+              className="relative flex flex-col items-center gap-5 md:gap-8 z-10"
+            >
+              {/* Glowing play icon */}
+              <div className="relative">
+                <motion.div
+                  animate={{ scale: [1, 1.15, 1] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 bg-red-500 blur-[100px] opacity-40"
+                />
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-red-500 via-red-600 to-red-900 flex items-center justify-center shadow-[0_0_80px_rgba(255,0,0,0.5)] border border-red-400/30"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 md:w-16 md:h-16 text-white ml-1.5">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </motion.div>
+              </div>
+
+              {/* Title */}
+              <div className="text-center">
+                <motion.p
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="text-white font-black text-2xl md:text-4xl tracking-[0.15em] drop-shadow-[0_0_20px_rgba(255,0,0,0.5)]"
+                >
+                  {lang === 'en' ? 'CELEBRATION' : 'احتفالية'}
+                </motion.p>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '100%' }}
+                  transition={{ delay: 0.7, duration: 0.8 }}
+                  className="h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent mt-3 mx-auto max-w-[60%]"
+                />
+                <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="absolute inset-0 z-30 flex items-center justify-center cursor-pointer"
+                  transition={{ delay: 0.8 }}
+                  className="text-red-400/60 text-xs md:text-sm mt-3 tracking-[0.2em] font-mono"
                 >
-                  {/* Animated gradient background */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-red-950/40 to-black/90" />
-                  
-                  {/* Pulsing rings */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {[0, 1, 2].map((i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ scale: 0.8, opacity: 0.5 }}
-                        animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 0.1, 0.3] }}
-                        transition={{ duration: 3, repeat: Infinity, delay: i * 1 }}
-                        className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full border border-red-500/20"
-                      />
-                    ))}
-                  </div>
+                  {lang === 'en' ? 'TAP ANYWHERE TO PLAY' : 'اضغط في أي مكان للتشغيل'}
+                </motion.p>
+              </div>
 
-                  {/* Center content */}
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    transition={{ type: "spring", damping: 15, delay: 0.3 }}
-                    className="relative flex flex-col items-center gap-6"
-                  >
-                    {/* Icon with glow */}
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-red-500 blur-[80px] opacity-40 animate-pulse" />
-                      <motion.div
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="relative w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-red-500 to-red-900 flex items-center justify-center shadow-[0_0_60px_rgba(255,0,0,0.4)]"
-                      >
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 md:w-14 md:h-14 text-white ml-1">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </motion.div>
-                    </div>
-
-                    {/* Text */}
-                    <div className="text-center">
-                      <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                        className="text-white/90 font-black text-xl md:text-3xl tracking-wider"
-                      >
-                        {lang === 'en' ? '🎉 CELEBRATION' : '🎉 احتفالية'}
-                      </motion.p>
-                      <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8 }}
-                        className="text-white/40 text-sm md:text-base mt-2 tracking-wide"
-                      >
-                        {lang === 'en' ? 'Tap anywhere to begin' : 'اضغط في أي مكان للبدء'}
-                      </motion.p>
-                    </div>
-
-                    {/* Bottom hint */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: [0, 0.5, 0] }}
-                      transition={{ delay: 1.5, duration: 2, repeat: Infinity }}
-                      className="flex items-center gap-2 text-white/30 text-xs"
-                    >
-                      <svg className="w-4 h-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                      </svg>
-                      <span>{lang === 'en' ? 'Click anywhere' : 'اضغط في أي مكان'}</span>
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-              )}
-
-              {error && (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] text-white flex-col gap-6 md:gap-10 p-6 md:p-12 text-center z-20">
-                   <button 
-                     onClick={() => setVideoEnded(true)}
-                     className="relative px-10 py-4 bg-white/10 backdrop-blur-md text-white font-bold text-lg rounded-2xl border border-white/10 hover:bg-white/20 transition-all hover:scale-105"
-                   >
-                     {lang === 'en' ? 'SKIP' : 'تخطي'}
-                   </button>
-                </div>
-              )}
-            </div>
+              {/* Animated arrow */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.6, 0] }}
+                transition={{ delay: 1.5, duration: 2.5, repeat: Infinity }}
+                className="flex flex-col items-center gap-1 text-white/30"
+              >
+                <svg className="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                <span className="text-[10px] tracking-[0.3em] uppercase">{lang === 'en' ? 'START' : 'ابدأ'}</span>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
 
-        {videoEnded && (
+        {!showOverlay && !showFinal && (
+          <motion.div
+            key="video"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 z-30 flex items-center justify-center bg-black"
+          >
+            <video
+              ref={videoRef}
+              src={VIDEO_URL}
+              className="w-full h-full object-cover"
+              onEnded={handleVideoEnd}
+              playsInline
+              autoPlay
+              controls={false}
+            />
+          </motion.div>
+        )}
+
+        {showFinal && (
           <motion.div
             key="final"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] p-3 md:p-6 text-center"
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] p-4 md:p-8 text-center overflow-hidden"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.15)_0%,transparent_60%)]" />
-
-            <motion.div
-              initial={{ y: 200, opacity: 0, rotateX: 20 }}
-              animate={{
-                y: [0, -10, 0],
-                opacity: 1,
-                rotateX: 0,
-              }}
-              transition={{
-                y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                opacity: { duration: 1 },
-                rotateX: { type: "spring", damping: 15, stiffness: 45 }
-              }}
-              className="relative w-full max-w-[90vw] md:max-w-4xl aspect-square md:aspect-video max-h-[50vh] md:max-h-none rounded-[20px] md:rounded-[40px] overflow-hidden border-2 border-red-500/40 shadow-[0_0_100px_rgba(255,0,0,0.4),inset_0_0_40px_rgba(255,0,0,0.2)] perspective-1000 z-10"
-            >
-              <img
-                src={FINAL_IMAGE}
-                className="w-full h-full object-cover select-none pointer-events-none transform hover:scale-105 transition-transform duration-1000"
-                alt="Celebration"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute inset-0 rounded-[30px] md:rounded-[40px] border border-white/20 pointer-events-none mix-blend-overlay"></div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-              className="mt-8 md:mt-16 relative z-20"
-            >
-              <button
-                onClick={onClose}
-                className="px-8 py-4 md:px-20 md:py-6 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-red-800 text-white font-black text-lg md:text-2xl hover:scale-110 active:scale-95 transition-all duration-300 shadow-[0_15px_50px_rgba(255,0,0,0.5)] relative overflow-hidden group"
-              >
-                <span className="relative z-10 flex items-center gap-3 tracking-widest uppercase drop-shadow-md">
-                  {t.close}
-                </span>
-                <div className="absolute inset-0 -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 z-0"></div>
-                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity z-0" />
-              </button>
-            </motion.div>
-
-            <div className="absolute inset-0 pointer-events-none">
-              {Array.from({ length: typeof window !== 'undefined' && window.innerWidth < 768 ? 15 : 40 }).map((_, i) => (
+            {/* Background effects */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,0,0,0.1),transparent_60%)]" />
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(5)].map((_, i) => (
                 <motion.div
                   key={i}
-                  initial={{ x: Math.random() * window.innerWidth, y: window.innerHeight + 100, opacity: 0 }}
-                  animate={{ y: -200, opacity: [0, 0.6, 0], scale: [1, 1.2, 0.5] }}
-                  transition={{ duration: Math.random() * 10 + 5, repeat: Infinity, delay: Math.random() * 5 }}
-                  className="absolute w-1.5 h-1.5 bg-red-500 rounded-full blur-[1px] shadow-[0_0_15px_#FF0000]"
+                  animate={{
+                    x: [Math.random() * 200 - 100, Math.random() * 200 - 100],
+                    y: [Math.random() * 200 - 100, Math.random() * 200 - 100],
+                  }}
+                  transition={{ duration: 10 + i * 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute rounded-full blur-[150px] opacity-20"
+                  style={{
+                    background: `radial-gradient(circle, rgba(255,0,0,0.3), transparent)`,
+                    width: `${100 + i * 50}px`,
+                    height: `${100 + i * 50}px`,
+                    top: `${10 + i * 20}%`,
+                    left: `${10 + i * 20}%`,
+                  }}
                 />
               ))}
             </div>
+
+            {/* Floating particles */}
+            <div className="absolute inset-0 pointer-events-none">
+              {[...Array(30)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ y: '100vh', opacity: 0 }}
+                  animate={{ y: '-10vh', opacity: [0, 0.5, 0] }}
+                  transition={{ duration: 5 + Math.random() * 10, repeat: Infinity, delay: Math.random() * 5 }}
+                  className="absolute w-1 h-1 bg-red-500/60 rounded-full"
+                  style={{ left: `${Math.random() * 100}%`, width: `${2 + Math.random() * 3}px`, height: `${2 + Math.random() * 3}px` }}
+                />
+              ))}
+            </div>
+
+            {/* Image container */}
+            <motion.div
+              initial={{ y: 100, opacity: 0, scale: 0.9 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              transition={{ type: "spring", damping: 20, stiffness: 80 }}
+              className="relative w-full max-w-[85vw] md:max-w-4xl aspect-[3/4] md:aspect-video rounded-[24px] md:rounded-[40px] overflow-hidden border border-red-500/30 shadow-[0_0_120px_rgba(255,0,0,0.3)] z-10"
+            >
+              {/* Shimmer border */}
+              <div className="absolute inset-0 z-20 rounded-[24px] md:rounded-[40px] pointer-events-none">
+                <div className="absolute inset-0 rounded-[24px] md:rounded-[40px] bg-gradient-to-b from-transparent via-red-500/10 to-transparent opacity-50" />
+              </div>
+
+              <img
+                src={FINAL_IMAGE}
+                className="w-full h-full object-cover"
+                alt="Celebration"
+              />
+
+              {/* Bottom gradient overlay */}
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10" />
+            </motion.div>
+
+            {/* Enter Hub Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, type: "spring", damping: 15 }}
+              className="mt-6 md:mt-10 relative z-20"
+            >
+              <motion.button
+                onClick={onClose}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative px-12 py-4 md:px-24 md:py-5 rounded-full bg-gradient-to-b from-red-600 to-red-900 text-white font-black text-lg md:text-xl tracking-[0.15em] uppercase shadow-[0_0_60px_rgba(255,0,0,0.4)] border border-red-500/30 overflow-hidden group"
+              >
+                {/* Hover shine */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                {/* Top light */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent_60%)]" />
+                <span className="relative z-10 flex items-center gap-3">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                  {t.close}
+                </span>
+              </motion.button>
+            </motion.div>
+
+            {/* Crown decoration at top */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.15 }}
+              transition={{ delay: 0.8 }}
+              className="absolute top-8 md:top-12 text-6xl md:text-8xl pointer-events-none"
+            >
+              👑
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
