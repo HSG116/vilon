@@ -57,6 +57,7 @@ const STATIC_SOCIALS = [
     createSocialLink('twitter', 'https://x.com/vilon45', '19.2K', 'أخبار وتحديثات سريعة'),
     createSocialLink('discord', 'https://discord.gg/H8ujXwHkHT', '2.3K', 'أكبر تجمع للأساطير'),
     createSocialLink('snapchat', 'https://snapchat.com/add/vilon', '1.2M+', 'يوميات حصرية وتغطيات خاصة'),
+    createSocialLink('tiktok', 'https://tiktok.com/@vln45_', '', 'مقاطع حصرية وتحديات'),
 ].filter(Boolean) as SocialLink[];
 
 const TRANSLATIONS = {
@@ -672,6 +673,7 @@ export default function App() {
             createSocialLink('twitter', 'https://x.com/vilon45', socialStats['X'], 'أخبار وتحديثات سريعة'),
             createSocialLink('discord', 'https://discord.gg/H8ujXwHkHT', socialStats['Discord'], 'أكبر تجمع للأساطير'),
             createSocialLink('snapchat', 'https://snapchat.com/t/nIjL135U', socialStats['Snapchat'], 'يوميات حصرية وتغطيات خاصة'),
+            createSocialLink('tiktok', 'https://tiktok.com/@vln45_', socialStats['TikTok'] || '', 'مقاطع حصرية وتحديات'),
         ].filter(Boolean) as SocialLink[];
         setSocials(updatedSocials);
     }, [socialStats]);
