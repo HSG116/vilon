@@ -579,75 +579,72 @@ const SupportLinks: React.FC<{ lang: Language }> = ({ lang }) => {
                 <span className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent"></span>
             </div>
 
-            {/* Hero Support Card - Portrait Premium Design */}
-            <div className="flex justify-center w-full px-4">
-                <a
-                    href="https://creators.sa/vilon"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group relative w-full max-w-xs h-96 md:h-[28rem] rounded-[32px] overflow-hidden transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.02]"
-                >
-                    {/* Outer Glow */}
-                    <div className="absolute -inset-1 bg-gradient-to-br from-violet-600 via-fuchsia-500 to-purple-600 rounded-[36px] opacity-40 group-hover:opacity-80 blur-xl transition-all duration-700 group-hover:blur-2xl"></div>
+            {/* Single Support Card - Full Width Premium */}
+            <div className="flex justify-center w-full">
+                <div className="w-full max-w-2xl">
+                    <a
+                        href="https://creators.sa/vilon"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative block w-full h-36 md:h-44 rounded-[24px] overflow-hidden transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.01]"
+                    >
+                        {/* Outer Glow */}
+                        <div className="absolute -inset-1 bg-gradient-to-br from-violet-600 via-fuchsia-500 to-purple-600 rounded-[28px] opacity-30 group-hover:opacity-60 blur-lg transition-all duration-700"></div>
 
-                    {/* Inner Background */}
-                    <div className="relative w-full h-full rounded-[32px] bg-gradient-to-br from-[#0e0e0e] via-[#1a0a2e] to-[#0e0e0e] border border-white/10 group-hover:border-violet-500/50 transition-all duration-500 overflow-hidden">
-                        
-                        {/* Animated Gradient Orbs */}
-                        <div className="absolute -top-20 -right-20 w-48 h-48 bg-violet-600/30 rounded-full blur-3xl group-hover:bg-violet-500/40 transition-all duration-700"></div>
-                        <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-fuchsia-600/20 rounded-full blur-3xl group-hover:bg-fuchsia-500/30 transition-all duration-700"></div>
-
-                        {/* Pattern Overlay */}
-                        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" 
-                            style={{ 
-                                backgroundImage: "url('https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png')",
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center'
-                            }}>
-                        </div>
-
-                        {/* Content */}
-                        <div className="relative z-10 flex flex-col items-center justify-between h-full p-8 md:p-10">
+                        {/* Inner Background */}
+                        <div className="relative w-full h-full rounded-[24px] bg-gradient-to-br from-[#0e0e0e] via-[#1a0a2e] to-[#0e0e0e] border border-white/10 group-hover:border-violet-500/40 transition-all duration-500 overflow-hidden">
                             
-                            {/* Top Icon */}
-                            <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 group-hover:border-violet-500/30 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
-                                <svg className="w-8 h-8 md:w-10 md:h-10 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                            {/* Gradient Orbs */}
+                            <div className="absolute -top-16 -right-16 w-40 h-40 bg-violet-600/25 rounded-full blur-3xl"></div>
+                            <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-fuchsia-600/15 rounded-full blur-3xl"></div>
+
+                            {/* Pattern */}
+                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+                                style={{ 
+                                    backgroundImage: "url('https://raw.githubusercontent.com/himedz116-hue/PNG/main/%D8%AA%D8%B5%D9%85%D9%8A%D9%85%20%D8%A8%D8%AF%D9%88%D9%86%20%D8%B9%D9%86%D9%88%D8%A7%D9%86%20(3)%20(1).png')",
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center'
+                                }}>
                             </div>
 
-                            {/* Center Title */}
-                            <div className="text-center -mt-4">
-                                <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-violet-400/80 mb-3">
-                                    {lang === 'en' ? 'CREATORS' : 'كريتورز'}
-                                </p>
-                                <h3 className={`text-4xl md:text-5xl font-black text-white tracking-tight ${lang === 'ar' ? 'font-arabic' : ''}`}>
-                                    VILON
-                                </h3>
-                                <div className="w-16 h-0.5 bg-gradient-to-r from-violet-500 to-fuchsia-500 mx-auto mt-4 rounded-full"></div>
-                            </div>
-
-                            {/* Bottom CTA */}
-                            <div className="flex flex-col items-center gap-3">
-                                <div className="px-6 py-3 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-sm font-bold tracking-wider group-hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-all duration-500 group-hover:scale-105">
-                                    {lang === 'en' ? 'SUPPORT NOW' : 'ادعم الآن'}
+                            {/* Content - Horizontal Layout */}
+                            <div className="relative z-10 flex items-center justify-between h-full px-6 md:px-8">
+                                
+                                {/* Left: Icon + Title */}
+                                <div className="flex items-center gap-5">
+                                    <div className="p-3 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 group-hover:border-violet-500/30 transition-all duration-500 group-hover:scale-110">
+                                        <svg className="w-6 h-6 md:w-7 md:h-7 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="text-[9px] font-bold tracking-[0.3em] uppercase text-violet-400/70 mb-0.5">
+                                            {lang === 'en' ? 'CREATORS' : 'كريتورز'}
+                                        </p>
+                                        <h3 className={`text-2xl md:text-3xl font-black text-white tracking-tight ${lang === 'ar' ? 'font-arabic' : ''}`}>
+                                            VILON
+                                        </h3>
+                                    </div>
                                 </div>
-                                <p className="text-[9px] uppercase tracking-[0.3em] text-white/30">
-                                    {lang === 'en' ? 'click to donate' : 'اضغط للتبرع'}
-                                </p>
-                            </div>
 
-                            {/* Corner Arrows */}
-                            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-violet-500/30 rounded-tl"></div>
-                            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-violet-500/30 rounded-tr"></div>
-                            <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-violet-500/30 rounded-bl"></div>
-                            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-violet-500/30 rounded-br"></div>
+                                {/* Right: CTA */}
+                                <div className="flex items-center gap-4">
+                                    <div className="hidden sm:flex px-4 py-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-xs font-bold tracking-wider group-hover:shadow-[0_0_25px_rgba(139,92,246,0.4)] transition-all duration-500 group-hover:scale-105">
+                                        {lang === 'en' ? 'SUPPORT NOW' : 'ادعم الآن'}
+                                    </div>
+                                    <div className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-300">
+                                        <svg className="w-4 h-4 text-white group-hover:text-black transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* Shine Effect */}
                             <div className="absolute inset-0 -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 pointer-events-none"></div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
 
             {/* Special Alert Section (Compact & Beautiful) */}
