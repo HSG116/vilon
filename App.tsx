@@ -579,27 +579,19 @@ const SupportLinks: React.FC<{ lang: Language }> = ({ lang }) => {
                 <span className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent"></span>
             </div>
 
-            {/* Layout: PayPal & Dokan Side-by-Side */}
-            <div className="grid grid-cols-2 gap-3 md:gap-4 w-full">
-                <PaymentCard
-                    lang={lang}
-                    title="PAYPAL"
-                    url="https://creators.sa/vilon"
-                    color="#3B82F6" // Blue
-                    labelEn="CREATORS"
-                    labelAr="كريتورز"
-                    className="h-32 md:h-40"
-                />
-                <PaymentCard
-                    lang={lang}
-                    title="DOKAN"
-                    url="https://tip.dokan.sa/vilon45"
-                    color="#FDE047" // Yellow
-                    labelEn="SEND TIP"
-                    labelAr="دعم دكان"
-                    iconImg="https://i.postimg.cc/Y0pfrW58/dokan-logo-white.png"
-                    className="h-32 md:h-40"
-                />
+            {/* Single Support Card - Elegant Centered Design */}
+            <div className="flex justify-center w-full">
+                <div className="w-full max-w-md">
+                    <PaymentCard
+                        lang={lang}
+                        title="VILON"
+                        url="https://creators.sa/vilon"
+                        color="#8B5CF6"
+                        labelEn="CREATORS"
+                        labelAr="كريتورز"
+                        className="h-40 md:h-48"
+                    />
+                </div>
             </div>
 
             {/* Special Alert Section (Compact & Beautiful) */}
